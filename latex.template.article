@@ -4,6 +4,11 @@
 \usepackage{booktabs, url, amsmath, graphicx, hyperref}
 \usepackage[dvipsnames]{xcolor} % Standard suite of named colors
 
+% packages for 'etable' output from R
+\usepackage{longtable, makecell, rotating, threeparttable}
+
+\usepackage{pdflscape}
+
 \hypersetup{
     colorlinks=true, % Colored links instead of boxed
     linkcolor={RoyalBlue}, % Color of internal links
