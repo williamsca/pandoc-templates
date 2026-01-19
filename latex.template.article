@@ -29,12 +29,12 @@
 \setlength{\parindent}{20pt} % Sets paragraph indentation
 \setlength{\parskip}{5pt plus 1pt} % Sets paragraph spacing
 
-% Run-in style for subsubsections (### headers)
+% run-in style for subsubsections
 \usepackage{titlesec}
 \titleformat{\subsubsection}[runin]
   {\normalfont\bfseries}
-  {\thesubsubsection}
-  {1em}
+  {}
+  {0em}
   {}
   [.]
 \titlespacing{\subsubsection}
