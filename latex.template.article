@@ -29,6 +29,17 @@
 \setlength{\parindent}{20pt} % Sets paragraph indentation
 \setlength{\parskip}{5pt plus 1pt} % Sets paragraph spacing
 
+% Run-in style for subsubsections (### headers)
+\usepackage{titlesec}
+\titleformat{\subsubsection}[runin]
+  {\normalfont\bfseries}
+  {\thesubsubsection}
+  {1em}
+  {}
+  [.]
+\titlespacing{\subsubsection}
+  {\parindent}{1.5ex plus .1ex minus .2ex}{1em}
+
 $if(listings)$
 \usepackage{listings}
 \lstset{
