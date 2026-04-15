@@ -1,0 +1,46 @@
+# Example Makefile for pandoc workflows
+# Templates and filters: ~/.pandoc/templates, ~/.pandoc/filters, ~/.pandoc/csl
+# Copy and adapt for each project; replace 'paper' and 'project' as needed.
+
+BIB = project.bib
+
+# ── Academic paper (PDF via LaTeX) ───────────────────────────────────────────
+
+paper.pdf: paper.tex $(BIB)
+	pdflatex paper
+	bibtex paper
+	pdflatex paper
+	pdflatex paper
+
+paper.tex: paper.md $(BIB)
+	pandoc --citeproc --natbib $< --template=latex.template -o $@
+
+# ── HTML blog post (Jekyll) ───────────────────────────────────────────────────
+
+BLOG_DIR ?= ../../williamsca.github.io
+BLOG_IMG  = $(BLOG_DIR)/assets/images
+BLOG_POST = $(BLOG_DIR)/_posts/$(shell date +%Y-%m-%d)-paper.md
+BLOG_PNGS = $(wildcard output/*.png)
+
+blog: paper.md $(BIB) $(BLOG_PNGS)
+	@mkdir -p $(BLOG_IMG)
+	cp $(BLOG_PNGS) $(BLOG_IMG)/
+	pandoc -L ~/.pandoc/filters/blog-filter.lua -t html --wrap=none \
+		--template=blog paper.md > $(BLOG_POST)
+	@echo "Blog post written to $(BLOG_POST)"
+
+# ── IFS .docx (figures as placeholders, citations as hyperlinked names) ───────
+# Reads from paper.tex so pandoc handles footnotes and citations via LaTeX reader.
+
+blog.docx: paper.tex $(BIB)
+	pandoc --from latex --bibliography=$(BIB) \
+		--lua-filter=~/.pandoc/filters/blog-filter-ifs.lua paper.tex -o blog.docx
+
+# ── Clean ─────────────────────────────────────────────────────────────────────
+
+.PHONY: clean
+
+clean:
+	rm -f paper.pdf paper.tex paper.html blog.docx
+	rm -f *.aux *.log *.gz *.out *.bbl *.blg
+	rm -f Rplots.pdf .RData
