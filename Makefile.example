@@ -36,6 +36,10 @@ blog.docx: paper.tex $(BIB)
 	pandoc --from latex --bibliography=$(BIB) \
 		--lua-filter=~/.pandoc/filters/blog-filter-ifs.lua paper.tex -o blog.docx
 
+# PNG figures for web submission (convert PDF figures at 200 dpi)
+%.png: %.pdf
+	convert -density 200 $< $@		
+
 # ── Clean ─────────────────────────────────────────────────────────────────────
 
 .PHONY: clean
